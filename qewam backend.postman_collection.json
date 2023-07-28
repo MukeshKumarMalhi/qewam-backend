@@ -1,0 +1,250 @@
+{
+	"info": {
+		"_postman_id": "242fa43e-d757-4965-891f-61521972f2d0",
+		"name": "qewam backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4215589",
+		"_collection_link": "https://galactic-robot-6666.postman.co/workspace/029d6baf-ba0f-49c1-8393-0ad419233b1c/collection/4215589-242fa43e-d757-4965-891f-61521972f2d0?action=share&creator=4215589&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "invoices",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "start_date",
+							"value": "2023-07-24",
+							"type": "text"
+						},
+						{
+							"key": "end_date",
+							"value": "2023-07-27",
+							"type": "text"
+						},
+						{
+							"key": "customer_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/invoices",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"invoices"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success response",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "start_date",
+									"value": "2023-07-25",
+									"type": "text"
+								},
+								{
+									"key": "end_date",
+									"value": "2023-07-26",
+									"type": "text"
+								},
+								{
+									"key": "customer_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/invoices",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"invoices"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 26 Jul 2023 09:12:16 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 26 Jul 2023 09:12:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.4"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "58"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": {\n        \"code\": 201,\n        \"messages\": [\n            \"Invoice created\"\n        ],\n        \"data\": {\n            \"invoice_id\": 1\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "invoice by Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/invoices/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"invoices",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/invoices/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"invoices",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 28 Jul 2023 12:53:45 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 28 Jul 2023 12:53:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.4"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": {\n        \"code\": 200,\n        \"messages\": [\n            \"Retreived Successfully\"\n        ],\n        \"data\": {\n            \"invoice_data\": {\n                \"invoice_id\": 1,\n                \"invoice_period\": \"2023-07-24 to 2023-07-27\",\n                \"customer_details\": {\n                    \"id\": 1,\n                    \"name\": \"Customer One\"\n                },\n                \"users\": [\n                    {\n                        \"name\": \"User 1\",\n                        \"email\": \"user1@mail.com\",\n                        \"created_at\": \"2023-07-27\",\n                        \"registrations\": [\n                            \"2023-07-26\"\n                        ],\n                        \"activations\": [\n                            \"2023-07-26\"\n                        ],\n                        \"appointments\": [\n                            \"2023-07-27\"\n                        ],\n                        \"invoice_total\": \"200 SAR\"\n                    },\n                    {\n                        \"name\": \"User 2\",\n                        \"email\": \"user2@mail.com\",\n                        \"created_at\": \"2023-07-27\",\n                        \"registrations\": [\n                            \"2023-07-27\"\n                        ],\n                        \"activations\": [\n                            \"2023-07-27\"\n                        ],\n                        \"appointments\": [\n                            \"2023-07-27\"\n                        ],\n                        \"invoice_total\": \"200 SAR\"\n                    }\n                ]\n            }\n        }\n    }\n}"
+				}
+			]
+		}
+	]
+}
