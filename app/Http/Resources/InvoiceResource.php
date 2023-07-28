@@ -70,7 +70,7 @@ class InvoiceResource extends JsonResource
             $user->registrations = $this->sortDates($registrations);
             $user->activations = $this->sortDates($activations);
             $user->appointments = $this->sortDates($appointments);
-            $user->invoice_total = max($prices);
+            $user->invoice_total = $prices;
             unset($user->sessions);
         }
 

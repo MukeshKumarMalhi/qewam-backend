@@ -25,7 +25,8 @@ class UserResource extends JsonResource
             'registrations' => $this->registrations,
             'activations' => $this->activations,
             'appointments' => $this->appointments,
-            'invoice_total' => $this->invoice_total.' SAR',
+            // 'invoice_total' => $this->invoice_total.' SAR',
+            'invoice_total' => count($this->invoice_total) > 1 ? max($this->invoice_total).' SAR' : $this->invoice_total[0].' SAR'
         ];
     }
 }
