@@ -35,8 +35,8 @@ class InvoiceResource extends JsonResource
         $invoice = Invoice::find($this->id);
         $users = $invoice->customer->users()->with(['sessions' => function($q) use ($invoice) {
             $q->where(function($query) use ($invoice) {
-                $query->whereBetween('activated', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)])
-                // ->orWhereBetween('activated', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)])
+                $query->whereBetween('registered', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)])
+                ->orWhereBetween('activated', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)])
                 ->orWhereBetween('appointment', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)]);
             });
             $q->whereHas('invoicedSessions', function($i) use($invoice){
@@ -45,7 +45,7 @@ class InvoiceResource extends JsonResource
         }])->get();
 
         foreach ($users as $key => $user) {
-            // $registrations = [];
+            $registrations = [];
             $activations = [];
             $appointments = [];
             $prices = [];
@@ -53,10 +53,10 @@ class InvoiceResource extends JsonResource
             if(count($user->sessions) > 0){
                 foreach($user->sessions as $session){
 
-                    // if($session->registered != null && $session->activated == null && $session->appointment == null){
-                    //     array_push($registrations, date('Y-m-d', strtotime($session->registered)));
-                    //     array_push($prices, $session->price);
-                    // }
+                    if($session->registered != null && $session->activated == null && $session->appointment == null){
+                        array_push($registrations, date('Y-m-d', strtotime($session->registered)));
+                        array_push($prices, $session->price);
+                    }
                     if($session->registered == null && $session->activated != null && $session->appointment == null){
                         array_push($activations, date('Y-m-d', strtotime($session->activated)));
                         array_push($prices, $session->price);
@@ -70,7 +70,7 @@ class InvoiceResource extends JsonResource
                 unset($users[$key]);
             }
 
-            // $user->registrations = $this->sortDates($registrations);
+            $user->registrations = $this->sortDates($registrations);
             $user->activations = $this->sortDates($activations);
             $user->appointments = $this->sortDates($appointments);
 
@@ -79,7 +79,7 @@ class InvoiceResource extends JsonResource
             $dateToCheck = new DateTime($user->created_at);
             $max_price = count($prices) > 1 ? max($prices) : $prices[0];
 
-            if ($dateToCheck >= $startDate && $dateToCheck <= $endDate && count($activations) > 0 && count($appointments) > 0) {
+            if ($dateToCheck >= $startDate && $dateToCheck <= $endDate) {
                 $max_price = $max_price-50;
             }
 
