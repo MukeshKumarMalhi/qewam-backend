@@ -79,7 +79,7 @@ class InvoiceResource extends JsonResource
             $dateToCheck = new DateTime($user->created_at);
             $max_price = count($prices) > 1 ? max($prices) : $prices[0];
 
-            if ($dateToCheck >= $startDate && $dateToCheck <= $endDate) {
+            if ($dateToCheck >= $startDate && $dateToCheck <= $endDate && count($activations) > 0) {
                 $max_price = $max_price-50;
             }
 
