@@ -21,12 +21,12 @@ class UserResource extends JsonResource
             // 'customer_id' => $this->customer_id,
             'name' => $this->name,
             'email' => $this->email,
-            'created_at' => date('Y-m-d', strtotime($this->created_at)),
-            'registrations' => $this->registrations,
+            'registration' => date('Y-m-d', strtotime($this->created_at)),
+            // 'registrations' => $this->registrations,
             'activations' => $this->activations,
             'appointments' => $this->appointments,
-            // 'invoice_total' => $this->invoice_total.' SAR',
-            'invoice_total' => count($this->invoice_total) > 1 ? max($this->invoice_total).' SAR' : $this->invoice_total[0].' SAR'
+            'sessions' => $this->sessions,
+            'max_price' => $this->max_price.' SAR'
         ];
     }
 }
