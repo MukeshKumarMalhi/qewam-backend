@@ -24,7 +24,7 @@ class InvoiceResource extends JsonResource
 
         return [
             'invoice_id' => $this->id,
-            'invoice_period' => date('Y-m-d', strtotime($this->start_date)).' to '.date('Y-m-d', strtotime($this->end_date)),
+            'invoice_period' => $this->dateFormatter($this->start_date).' to '.$this->dateFormatter($this->end_date),
             'customer_details' => new CustomerResource($this->customer),
             'users' => UserResource::collection($this->getUsers()),
             'invoice_total' => $arrSum.' SAR'
@@ -35,9 +35,9 @@ class InvoiceResource extends JsonResource
         $invoice = Invoice::find($this->id);
         $users = $invoice->customer->users()->with(['sessions' => function($q) use ($invoice) {
             $q->where(function($query) use ($invoice) {
-                $query->whereBetween('registered', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)])
-                ->orWhereBetween('activated', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)])
-                ->orWhereBetween('appointment', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)]);
+                $query->whereBetween('registered', [$this->toDateTime($invoice->start_date), $this->toDateTime($invoice->end_date)])
+                ->orWhereBetween('activated', [$this->toDateTime($invoice->start_date), $this->toDateTime($invoice->end_date)])
+                ->orWhereBetween('appointment', [$this->toDateTime($invoice->start_date), $this->toDateTime($invoice->end_date)]);
             });
             $q->whereHas('invoicedSessions', function($i) use($invoice){
                 $i->where('invoice_id',$invoice->id);
@@ -50,19 +50,28 @@ class InvoiceResource extends JsonResource
             $appointments = [];
             $prices = [];
 
+            $startDate = $this->toDateTime($invoice->start_date);
+            $endDate = $this->toDateTime($invoice->end_date);
+            $dateToCheck = $this->toDateTime($user->created_at);
+
             if(count($user->sessions) > 0){
                 foreach($user->sessions as $session){
 
                     if($session->registered != null && $session->activated == null && $session->appointment == null){
-                        array_push($registrations, date('Y-m-d', strtotime($session->registered)));
+                        array_push($registrations, $this->dateFormatter($session->registered));
                         array_push($prices, $session->price);
                     }
                     if($session->registered == null && $session->activated != null && $session->appointment == null){
-                        array_push($activations, date('Y-m-d', strtotime($session->activated)));
-                        array_push($prices, $session->price);
+                        array_push($activations, $this->dateFormatter($session->activated));
+                        $dateToCheckActivate = $this->toDateTime($session->activated);
+                        if ($dateToCheckActivate >= $startDate && $dateToCheckActivate <= $endDate) {
+                            array_push($prices, $session->price);
+                        }else{
+                            array_push($prices, $session->price-50);
+                        }
                     }
                     if($session->registered == null && $session->activated == null && $session->appointment != null){
-                        array_push($appointments, date('Y-m-d', strtotime($session->appointment)));
+                        array_push($appointments, $this->dateFormatter($session->appointment));
                         array_push($prices, $session->price);
                     }
                 }
@@ -74,12 +83,9 @@ class InvoiceResource extends JsonResource
             $user->activations = $this->sortDates($activations);
             $user->appointments = $this->sortDates($appointments);
 
-            $startDate = new DateTime($invoice->start_date);
-            $endDate = new DateTime($invoice->end_date);
-            $dateToCheck = new DateTime($user->created_at);
             $max_price = count($prices) > 1 ? max($prices) : $prices[0];
 
-            if ($dateToCheck >= $startDate && $dateToCheck <= $endDate && count($activations) > 0) {
+            if ($dateToCheck >= $startDate && $dateToCheck <= $endDate) {
                 $max_price = $max_price-50;
             }
 
@@ -94,5 +100,13 @@ class InvoiceResource extends JsonResource
             return strtotime($a) - strtotime($b);
         });
         return $arr;
+    }
+
+    private function toDateTime($date){
+        return new DateTime($date);
+    }
+
+    private function dateFormatter($date){
+        return date('Y-m-d', strtotime($date));
     }
 }

@@ -25,10 +25,6 @@ class InvoiceController extends Controller
             return $this->response([], 404, false, ['Customer not found']);
 
         $attributes = $this->attributes($request);
-        $attributes['customer_id'] = $request->customer_id;
-        $attributes['start_date'] = Carbon::parse($request->start_date);
-        $attributes['end_date'] = Carbon::parse($request->end_date);
-
         $created = Invoice::create($attributes);
 
         return $this->response(['invoice_id' => $created->id], 201, false, ['Invoice created']);
@@ -39,7 +35,9 @@ class InvoiceController extends Controller
         if(!$this->invoiceExists($id))
             return $this->response([], 404, false, ['Invoice not found']);
 
+
         $invoice = Invoice::find($id);
+
         $users = $invoice->customer->users()->with(['sessions' => function($q) use ($invoice) {
             $q->where(function($query) use ($invoice) {
                 $query->whereBetween('registered', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)])
