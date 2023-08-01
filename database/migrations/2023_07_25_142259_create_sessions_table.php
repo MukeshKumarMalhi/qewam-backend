@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamp('registered')->nullable();
             $table->timestamp('activated')->nullable();
             $table->timestamp('appointment')->nullable();
             $table->double('price',5,2)->default(0.00);

@@ -40,9 +40,8 @@ class InvoiceController extends Controller
 
         $users = $invoice->customer->users()->with(['sessions' => function($q) use ($invoice) {
             $q->where(function($query) use ($invoice) {
-                $query->whereBetween('registered', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)])
-                      ->orWhereBetween('activated', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)])
-                      ->orWhereBetween('appointment', [new DateTime($invoice->start_date), new DateTime($invoice->end_date)]);
+                $query->whereBetween('activated', [$this->toDateTime($invoice->start_date), $this->toDateTime($invoice->end_date)])
+                      ->orWhereBetween('appointment', [$this->toDateTime($invoice->start_date), $this->toDateTime($invoice->end_date)]);
             });
             $q->doesntHave('invoicedSessions');
         }])->get();
@@ -64,6 +63,10 @@ class InvoiceController extends Controller
     public function invoiceExists($id)
     {
         return Invoice::where('id', $id)->exists();
+    }
+
+    private function toDateTime($date){
+        return new DateTime($date);
     }
 
     protected function attributes($request)

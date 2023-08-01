@@ -19,32 +19,32 @@ class UserSeeder extends Seeder
                 'name' => 'User 1',
                 'email' => 'user1@mail.com',
                 'password' => 12345678,
-                'created_at' => date('Y-m-d'),
-                'updated_at' => date('Y-m-d')
+                'created_at' => '2023-07-21',
+                'updated_at' => '2023-07-21'
             ],
             [
                 'customer_id' => 1,
                 'name' => 'User 2',
                 'email' => 'user2@mail.com',
                 'password' => 12345678,
-                'created_at' => date('Y-m-d'),
-                'updated_at' => date('Y-m-d')
+                'created_at' => '2023-07-21',
+                'updated_at' => '2023-07-21'
             ],
             [
-                'customer_id' => 2,
+                'customer_id' => 1,
                 'name' => 'User 3',
                 'email' => 'user3@mail.com',
                 'password' => 12345678,
-                'created_at' => date('Y-m-d'),
-                'updated_at' => date('Y-m-d'),
+                'created_at' => '2023-07-26',
+                'updated_at' => '2023-07-26',
             ],
             [
-                'customer_id' => 2,
+                'customer_id' => 1,
                 'name' => 'User 4',
                 'email' => 'user4@mail.com',
                 'password' => 12345678,
-                'created_at' => date('Y-m-d'),
-                'updated_at' => date('Y-m-d'),
+                'created_at' => '2023-07-21',
+                'updated_at' => '2023-07-21',
             ]
         ]);
     }
